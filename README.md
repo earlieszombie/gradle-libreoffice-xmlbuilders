@@ -1,26 +1,45 @@
-## LibreOffice XmlBuilders Gradle Plugin
+# LibreOffice XML Builders Gradle Plugin
 
-- integration with LibreOffice Java Add-in (once published locally):
+This Gradle plugin provides utility functions and helpers to streamline the process of building and manipulating XML files for LibreOffice integrations, especially those involving YAML-based definitions. The plugin is designed to support automation tasks associated with LibreOffice extension development.
+
+## Features
+
+- **YAML-to-XML Conversion:** Read YAML definitions and produce XML output suitable for LibreOffice extensions.
+- **Seamless Gradle Integration:** Easily incorporate XML building utilities in Java and Groovy-based Gradle projects.
+- **Testing with Spock:** Includes comprehensive unit and functional test support using the Spock framework.
+
+## Getting Started
+
+### Apply the Plugin
+
+Add the plugin to your `build.gradle`:
 ```groovy
-buildscript {
-  repositories {
-    mavenLocal()
-    mavenCentral()
-  }
-  dependencies {
-    classpath "org.boldi.libreoffice.utils:libreoffice-xmlbuilders:1.0.0"
-  }
+plugins {
+id 'org.boldi.libreoffice.utils.xmlbuilders' version '1.0.0'
 }
+```
 
-apply plugin: 'org.boldi.libreoffice.utils.xmlbuilders'
+### Usage Overview
 
-xmlBuildersExt {
-    greeting = "Hi from my gradle extension!"
-}
+Once applied, the plugin exposes DSLs and tasks for:
 
-tasks.named('hello') {
-    doLast {
-        println "This runs after the hello task..."
-    }
-}
+- Converting YAML configuration into LibreOffice-compatible XML fragments
+- Automating routine XML edits for extension development
+
+Refer to project documentation or Gradle task help for available commands and configuration options.
+
+### Dependencies
+
+This project utilizes:
+
+- [SnakeYAML](https://bitbucket.org/asomov/snakeyaml) for YAML parsing
+- [Spock Framework](https://spockframework.org/) for testing
+
+All dependencies are automatically managed through Gradle.
+
+### Testing
+
+The plugin includes both standard and functional tests. After modifying the code, run:
+```sh
+./gradlew check
 ```
