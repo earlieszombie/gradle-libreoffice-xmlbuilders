@@ -1,0 +1,66 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group = 'org.boldi.libreoffice.utils'
+version = '1.0.0'
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+}
+
+def pluginId = 'xmlbuilders'
+def pluginClassName = 'XmlBuilders'
+
+dependencies {
+    implementation 'org.yaml:snakeyaml:2.4'
+}
+
+testing {
+    suites {
+        test {
+            useSpock('2.2-groovy-3.0')
+        }
+        functionalTest(JvmTestSuite) {
+            useSpock('2.2-groovy-3.0')
+            dependencies {
+                implementation project()
+                implementation 'org.yaml:snakeyaml:2.4'
+            }
+            targets {
+                all {
+                    testTask.configure { 
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+gradlePlugin {
+    plugins {
+        "${pluginId}" {
+            id = "${group}.${pluginId}"
+            implementationClass = "${group}.${pluginClassName}"
+        }
+    }
+}
+
+gradlePlugin.testSourceSets.add(sourceSets.functionalTest)
+
+tasks.named('check') {
+    dependsOn(testing.suites.functionalTest)
+}
+
+tasks.register('jreleaserAssemble') {
+    dependsOn tasks.named('publishToMavenLocal')
+}

@@ -1,0 +1,14 @@
+add_in_functions:
+- display_name:
+    en: 'TestFunction'
+  description:
+    en: 'Test function'
+  compatibility_name:
+    en: 'TEST_FUNCTION'
+  parameters:
+    - name: 'test_param' # the parameter under test: should appear as TestParam in the xml output file
+      properties:
+        display_name:
+          en: 'test parameter display name'
+        description:
+          en: 'test parameter description'

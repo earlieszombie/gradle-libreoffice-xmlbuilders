@@ -1,0 +1,9 @@
+{
+  "watch": [
+    "src/**/*.groovy",
+    "*.gradle",
+    "src/**/*.gradle"
+  ],
+  "ext": "groovy,gradle",
+  "exec": "./publish_and_test.sh"
+}

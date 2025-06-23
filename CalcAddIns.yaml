@@ -1,0 +1,15 @@
+add_in_functions:
+    # function 1
+    - display_name:
+        en: 'FNDISPLAYNAME'
+      description:
+        en: 'english add in description'
+      compatibility_name:
+        en: 'FNDISPLAYNAME'
+      parameters:
+        - name: 'param name'
+          properties:
+            display_name:
+              en: 'param display name (en)'
+            description:
+              en: 'param description (en)'

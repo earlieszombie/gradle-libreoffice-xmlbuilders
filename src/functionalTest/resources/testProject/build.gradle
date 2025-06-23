@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'org.boldi.libreoffice.utils:libreoffice-xmlbuilders:1.0.0'
+    }
+}
+
+apply plugin: 'org.boldi.libreoffice.utils.xmlbuilders'
+
+xmlBuildersExt {
+    buildManifestXml {
+        projectName.set(rootProject.name)
+        outputFile.set(layout.buildDirectory.file("manifest.xml"))
+        licensesDir.set(layout.projectDirectory.dir("licenses"))
+        descriptionsDir.set(layout.projectDirectory.dir("descriptions"))
+    }
+    buildDescriptionXml {
+        versionGitTag.set('1.0.0-a087d1fcce')
+        outputFile.set(layout.buildDirectory.file("description.xml"))
+        loMinimalVersion.set('24.2')
+        loName.set('LibreOffice 24.2')
+        componentServiceId.set("com.example.libreoffice.calc.${rootProject.name}")
+        displayName.set('My LibreOffice Calc Add-in')
+        publisher.set('John Doe')
+        licensesDir.set(layout.projectDirectory.dir("licenses"))
+    }
+    buildXcuRegistry {
+        inputFile.set(layout.projectDirectory.file("CalcAddIns.yaml"))
+        outputFile.set(layout.buildDirectory.file("CalcAddIns.xcu"))
+        componentServiceId.set("com.example.libreoffice.calc.${rootProject.name}")
+    }
+    buildLog4J2Xml {
+        projectName.set(rootProject.name)
+        outputFile.set(layout.buildDirectory.file("log4j2.xml"))
+        componentRootUrl.set("com.example.libreoffice.calc")
+        logsRootDirPath.set("${System.getenv('HOME')}/.var/logs")
+    }
+}

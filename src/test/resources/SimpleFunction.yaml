@@ -1,0 +1,10 @@
+add_in_functions:
+  - display_name:
+      en: "SimpleFunction"
+      fr: "FonctionSimple"
+    description:
+      en: "Description (en) of the SimpleFunction"
+      fr: "Description (fr) de la FonctionSimple"
+    compatibility_name:
+      en: "SIMPLE_FUNCTION"
+    parameters: []

@@ -1,0 +1,23 @@
+add_in_functions:
+  - display_name:
+      en: "Function1"
+    description:
+      en: "First function"
+    compatibility_name:
+      en: "FUNCTION_1"
+    parameters:
+      - name: "param1"
+        properties:
+          description:
+            en: "Parameter 1"
+  - display_name:
+      en: "Function2"
+    description:
+      en: "Second function"
+    compatibility_name:
+      en: "FUNCTION_2"
+    parameters:
+      - name: "param1"
+        properties:
+          description:
+            en: "Parameter 1"
