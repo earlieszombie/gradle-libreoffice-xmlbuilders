@@ -1,0 +1,44 @@
+project:
+  name: libreoffice-xmlbuilders
+  description: LibreOffice XML Builders Gradle Plugin
+  longDescription: A Gradle plugin for building and manipulating XML files involved in LibreOffice Java Calc Add-ins development.
+  website: https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git
+  authors:
+    - Fred Boldireff
+  license: Apache-2.0  # or your license
+  inceptionYear: '2025'  # adjust as needed
+  stereotype: gradle-plugin
+
+release:
+  github:
+    owner: earlieszombie
+    name: gradle-libreoffice-xmlbuilders
+    milestone:
+      close: false
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
+
+signing:
+  active: ALWAYS
+  armored: true
+
+deploy:
+  maven:
+    mavenCentral:
+      sonatype:
+        active: ALWAYS
+        url: https://central.sonatype.com/api/v1/publisher
+        stagingRepositories:
+          - build/staging-deploy
+    gradlePluginPortal:
+      active: ALWAYS
+
+distributions:
+  your-plugin-name: libreoffice-xmlbuilders
+  type: SINGLE_JAR
+  stereotype: gradle-plugin
+  artifacts:
+    - path: 'build/libs/{{distributionName}}-{{projectVersion}}.jar'

@@ -1,0 +1,66 @@
+name: Deploy to Maven Central
+
+on:
+  workflow_dispatch:
+    # Manually trigger the workflow from the GitHub Actions UI
+    # or CLI:
+    # % gh workflow run "Deploy to Maven Central" -f version=1.0.0-RC1
+    inputs:
+      version:
+        description: '1.0.0-RC1'
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Essential for JReleaser to work with Git history (even for just deploy)
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu' # Or 'zulu', 'adopt'
+          java-version: '21.0.7' # Or your desired Java version
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Configure GPG
+        # This step imports your GPG private key from a GitHub secret
+        run: |
+          echo "${{ secrets.JRELEASER_GPG_SECRET_KEY }}" | gpg --batch --import
+          echo "${{ secrets.JRELEASER_GPG_PASSPHRASE }}" > ~/.gnupg/passphrase.txt
+          chmod 600 ~/.gnupg/passphrase.txt
+        env:
+          # Passphrase for GPG key, typically stored in GitHub Secrets
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+
+      - name: Deploy to Maven Central
+        run: ./gradlew jreleaserDeploy
+        env:
+          # Sonatype OSSRH credentials (stored as GitHub Secrets)
+          SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+
+          # GPG keys (stored as GitHub Secrets)
+          # JReleaser will use these from environment variables
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
+          # JRELEASER_GPG_PUBLIC_KEY is usually not strictly needed as an env var here
+          # if your public key is already on a public keyserver.
+          # JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+
+          # Optional: If your Gradle build determines version dynamically,
+          # and you want to override it for manual dispatch or specific tags.
+          JRELEASER_PROJECT_VERSION: ${{ github.event.inputs.version || github.ref_name }}

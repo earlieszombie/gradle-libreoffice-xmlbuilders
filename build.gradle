@@ -2,19 +2,103 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
+    id 'org.jreleaser' version '1.18.0'
 }
 
 group = 'org.boldi.libreoffice.utils'
-version = '1.0.0'
+version = '1.0.0-RC1'
+description = 'A Gradle plugin for generating th XML files needed to build a LibreOffice Calc Add-in'
+
+
+def pluginId = 'xmlbuilders'
+def pluginClassName = 'XmlBuilders'
+
+repositories {
+    mavenCentral()
+}
+
+// Configure Java and GPG for Maven Central requirements
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 publishing {
     repositories {
         mavenLocal()
     }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = rootProject.name
+                description = 'LibreOffice Calc Add-ins XML files builders'
+                url = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'earlieszombie'
+                        name = 'Fred Boldireff'
+                        email = 'earlieszombie@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+                    developerConnection = 'scm:git:ssh://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+                    url = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+                }
+            }
+        }
+    }
 }
 
-def pluginId = 'xmlbuilders'
-def pluginClassName = 'XmlBuilders'
+jreleaser {
+    project {
+        // Essential project metadata for JReleaser and Maven Central
+        name = 'libreoffice-xmlbuilders'
+        description = 'A Gradle plugin for building and manipulating XML files involved in LibreOffice Java Calc Add-ins development.'
+        authors = ['Fred Boldireff']
+        license = 'Apache-2.0'
+        website = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders'
+    }
+    signing {
+        active = org.jreleaser.model.Active.ALWAYS
+        mode = org.jreleaser.model.Signing.Mode.MEMORY // using base64 encoded keys
+        armored = true
+    }
+    deploy {
+        maven {
+            // The 'sonatype' block is for publishing directly to central.sonatype.com's Portal API
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS' // Or 'RELEASE' if you only want to deploy on release
+                    url = 'https://central.sonatype.com/api/v1/publisher' // Sonatype Portal API URL
+                    // snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/' // Uncomment if publishing snapshots
+                    applyMavenCentralRules = true // Ensures all Maven Central requirements are met
+                    // stagingRepositories = [layout.buildDirectory.dir("distributions/staging-deploy").asFile.absolutePath] // JReleaser's staging directory
+
+                    // Credentials for Sonatype OSSRH (use environment variables or JReleaser secrets)
+                    username = System.getenv('SONATYPE_USERNAME')
+                    password = System.getenv('SONATYPE_PASSWORD') // Or token if using API token
+                }
+            }
+        }
+    }
+
+    // Optional: Configure GitHub releases if you want JReleaser to create them
+    release {
+        github {
+            name = 'gradle-libreoffice-xmlbuilders'
+            token = System.getenv('GITHUB_TOKEN') // GitHub personal access token
+        }
+    }
+}
 
 dependencies {
     implementation 'org.yaml:snakeyaml:2.4'
@@ -59,8 +143,4 @@ gradlePlugin.testSourceSets.add(sourceSets.functionalTest)
 
 tasks.named('check') {
     dependsOn(testing.suites.functionalTest)
-}
-
-tasks.register('jreleaserAssemble') {
-    dependsOn tasks.named('publishToMavenLocal')
 }
