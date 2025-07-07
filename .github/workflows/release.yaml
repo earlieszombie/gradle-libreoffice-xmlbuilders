@@ -46,8 +46,7 @@ jobs:
         run: ./gradlew jreleaserRelease
         env:
           # Sonatype credentials
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
 
           # GPG credentials (these are also critical for JReleaser signing)
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
