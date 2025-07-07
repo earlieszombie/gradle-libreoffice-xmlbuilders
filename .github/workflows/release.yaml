@@ -33,25 +33,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Set up GPG
-        run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-          echo "${{ secrets.GPG_PASSPHRASE }}" > ~/.gnupg/passphrase.txt
-          chmod 600 ~/.gnupg/passphrase.txt
-          # GPG_PUBLIC_KEY is usually not needed to be imported on the runner if it's already on a keyserver,
-          # but if you configured JReleaser to read it as a variable, define it.
-          # echo "${{ secrets.GPG_PUBLIC_KEY }}" | gpg --batch --import
-
       - name: Run JReleaser
         run: ./gradlew jreleaserRelease
         env:
           # Sonatype credentials
           SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
 
-          # GPG credentials (these are also critical for JReleaser signing)
-          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }} # Only if you define it as such in JReleaser config
-          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          # GPG credentials for JReleaser signing
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
 
-          # GitHub Token (if you configured JReleaser to create GitHub Releases)
-          GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }} # This is a default token provided by GitHub Actions
+          # GitHub Token
+          GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}

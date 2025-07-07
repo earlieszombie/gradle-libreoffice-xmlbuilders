@@ -68,24 +68,18 @@ jreleaser {
         website = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders'
     }
     signing {
-        active = org.jreleaser.model.Active.ALWAYS
-        mode = org.jreleaser.model.Signing.Mode.MEMORY // using base64 encoded keys
+        active = 'ALWAYS'
+        mode = 'MEMORY' // using base64 encoded keys
         armored = true
     }
     deploy {
         maven {
-            // The 'sonatype' block is for publishing directly to central.sonatype.com's Portal API
             mavenCentral {
                 sonatype {
                     active = 'ALWAYS' // Or 'RELEASE' if you only want to deploy on release
                     url = 'https://central.sonatype.com/api/v1/publisher' // Sonatype Portal API URL
-                    // snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/' // Uncomment if publishing snapshots
                     applyMavenCentralRules = true // Ensures all Maven Central requirements are met
-                    // stagingRepositories = [layout.buildDirectory.dir("distributions/staging-deploy").asFile.absolutePath] // JReleaser's staging directory
-
-                    // Credentials for Sonatype OSSRH (use environment variables or JReleaser secrets)
-                    username = System.getenv('SONATYPE_USERNAME')
-                    password = System.getenv('SONATYPE_PASSWORD') // Or token if using API token
+                    token = System.getenv('SONATYPE_TOKEN')
                 }
             }
         }
