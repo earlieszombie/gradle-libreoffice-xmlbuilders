@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*' # Trigger on new tags like v1.0.0
+      - 'v*.*.*-*' # Also trigger on pre-release tags like v1.0.0-RC1
 
 jobs:
   release:
