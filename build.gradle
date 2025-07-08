@@ -79,7 +79,8 @@ jreleaser {
                     active = 'ALWAYS' // Or 'RELEASE' if you only want to deploy on release
                     url = 'https://central.sonatype.com/api/v1/publisher' // Sonatype Portal API URL
                     applyMavenCentralRules = true // Ensures all Maven Central requirements are met
-                    token = System.getenv('SONATYPE_TOKEN')
+                    username = System.getenv('SONATYPE_USERNAME')
+                    password = System.getenv('SONATYPE_PASSWORD')
                 }
             }
         }
