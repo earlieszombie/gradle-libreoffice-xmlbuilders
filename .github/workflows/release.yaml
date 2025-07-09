@@ -33,17 +33,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Run JReleaser
-        run: ./gradlew jreleaserRelease
+      - name: Setup PGP keys
         env:
           # Sonatype credentials
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
 
           # GPG credentials for JReleaser signing
-          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
-          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY_B64: ${{ secrets.JRELEASER_GPG_SECRET_KEY_B64 }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
 
           # GitHub Token
           JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
+        run: |
+          echo "$JRELEASER_GPG_SECRET_KEY_B64" | base64 -d > signing-key.asc
+          echo "signing.key=$(cat signing-key.asc)" >> $GITHUB_ENV
+          echo "signing.passphrase=$SIGNING_PASSPHRASE" >> $GITHUB_ENV
+
+      - name: Run JReleaser
+        run: ./gradlew jreleaserRelease \
+          -Psigning.key="${{ env.signing.key }}" \
+          -Psigning.passphrase="${{ env.signing.passphrase }}"

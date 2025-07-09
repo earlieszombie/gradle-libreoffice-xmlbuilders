@@ -71,7 +71,6 @@ jreleaser {
         active = 'ALWAYS'
         mode = 'MEMORY'
         armored = true
-        algorithm = 'SHA256withRSA'
     }
     deploy {
         maven {
