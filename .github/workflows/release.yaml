@@ -48,7 +48,7 @@ jobs:
         run: |
           echo "$JRELEASER_GPG_SECRET_KEY_B64" | base64 -d > signing-key.asc
           echo "signing.key=$(cat signing-key.asc)" >> $GITHUB_ENV
-          echo "signing.passphrase=$SIGNING_PASSPHRASE" >> $GITHUB_ENV
+          echo "signing.passphrase=$JRELEASER_GPG_PASSPHRASE" >> $GITHUB_ENV
 
       - name: Run JReleaser
         run: ./gradlew jreleaserRelease \
