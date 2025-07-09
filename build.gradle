@@ -69,8 +69,9 @@ jreleaser {
     }
     signing {
         active = 'ALWAYS'
-        mode = 'MEMORY' // using base64 encoded keys
+        mode = 'MEMORY'
         armored = true
+        algorithm = 'SHA256withRSA'
     }
     deploy {
         maven {
