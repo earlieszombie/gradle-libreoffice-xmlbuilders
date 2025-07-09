@@ -45,7 +45,7 @@ jobs:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           # Cosign credentials
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          JRELEASER_COSIGN_PRIVATE_KEY: ${{ secrets.JRELEASER_COSIGN_PRIVATE_KEY }}
+          JRELEASER_COSIGN_PASSWORD: ${{ secrets.JRELEASER_COSIGN_PASSWORD }}
           # GitHub Token
           JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
