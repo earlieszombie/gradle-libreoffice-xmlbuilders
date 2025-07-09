@@ -38,6 +38,9 @@ jobs:
         with:
           cosign-release: 'v2.2.0'
 
+      - name: Build and stage artifacts
+        run: ./gradlew build publishToMavenLocal
+
       - name: Run JReleaser
         run: ./gradlew jreleaserRelease
         env:
