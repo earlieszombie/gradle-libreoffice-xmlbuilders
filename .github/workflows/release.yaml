@@ -33,25 +33,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Setup PGP keys
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+        with:
+          cosign-release: 'v2.2.0'
+
+      - name: Run JReleaser
+        run: ./gradlew jreleaserRelease
         env:
           # Sonatype credentials
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-
-          # GPG credentials for JReleaser signing
-          JRELEASER_GPG_SECRET_KEY_B64: ${{ secrets.JRELEASER_GPG_SECRET_KEY_B64 }}
-          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
-
+          # Cosign credentials
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           # GitHub Token
           JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
-        run: |
-          echo "$JRELEASER_GPG_SECRET_KEY_B64" | base64 -d > signing-key.asc
-          echo "signing.key=$(cat signing-key.asc)" >> $GITHUB_ENV
-          echo "signing.passphrase=$JRELEASER_GPG_PASSPHRASE" >> $GITHUB_ENV
-          echo $GITHUB_ENV
-
-      - name: Run JReleaser
-        run: ./gradlew jreleaserRelease \
-          -Psigning.key="${{ env.signing.key }}" \
-          -Psigning.passphrase="${{ env.signing.passphrase }}"

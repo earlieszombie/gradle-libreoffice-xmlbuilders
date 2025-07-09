@@ -69,8 +69,8 @@ jreleaser {
     }
     signing {
         active = 'ALWAYS'
-        mode = 'MEMORY'
-        armored = true
+        mode = 'COSIGN'
+        armored = false
     }
     deploy {
         maven {
