@@ -39,7 +39,10 @@ jobs:
           cosign-release: 'v2.2.0'
 
       - name: Build and stage artifacts
-        run: ./gradlew build publishToMavenLocal --stacktrace --continue || true
+        run: |
+          ./gradlew build publishToMavenLocal --stacktrace --continue || true
+          mkdir -p build/staging-deploy
+          cp -r ~/.m2/repository/org/boldi/libreoffice/utils/libreoffice-xmlbuilders/* build/staging-deploy/ || true
 
       - name: Run JReleaser
         run: ./gradlew jreleaserRelease
