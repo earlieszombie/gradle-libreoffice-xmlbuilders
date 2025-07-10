@@ -55,7 +55,7 @@ jobs:
           ls -la build/staging-deploy/ || echo "Directory not found"
 
       - name: Run JReleaser
-        run: ./gradlew jreleaserRelease
+        run: ./gradlew jreleaserRelease --info
         env:
           # Sonatype credentials
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
