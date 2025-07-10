@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenLocal()
+        mavenCentral()
     }
     dependencies {
         classpath 'org.boldi.libreoffice.utils:libreoffice-xmlbuilders:1.0.0-RC1'
