@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew publishToMavenLocal --stacktrace
 
       - name: Run tests with plugin available
-        run: ./gradlew test functionalTest --stacktrace
+        run: ./gradlew test functionalTest --stacktrace --info
 
       - name: Build and stage artifacts for deployment
         run: |
