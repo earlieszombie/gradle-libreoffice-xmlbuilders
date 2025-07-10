@@ -47,12 +47,18 @@ jobs:
       - name: Build and stage artifacts for deployment
         run: |
           mkdir -p build/staging-deploy
+          echo "Contents of build/libs/ before staging:"
+          ls -la build/libs/ || echo "build/libs not found"
+          echo "Contents of Maven repository:"
+          ls -la ~/.m2/repository/org/boldi/libreoffice/utils/libreoffice-xmlbuilders/1.0.0-RC1/ || echo "Maven repo not found"
           # Copy JAR files from build/libs
-          cp build/libs/*.jar build/staging-deploy/ || true
+          cp build/libs/*.jar build/staging-deploy/ || echo "No JARs to copy"
           # Copy POM files from Maven repository
-          cp ~/.m2/repository/org/boldi/libreoffice/utils/libreoffice-xmlbuilders/1.0.0-RC1/*.pom build/staging-deploy/ || true
-          echo "Contents of build/staging-deploy/:"
-          ls -la build/staging-deploy/ || echo "Directory not found"
+          cp ~/.m2/repository/org/boldi/libreoffice/utils/libreoffice-xmlbuilders/1.0.0-RC1/*.pom build/staging-deploy/ || echo "No POMs to copy"
+          echo "Final contents of build/staging-deploy/:"
+          ls -la build/staging-deploy/ || echo "Staging directory not found"
+          echo "Checking if staging directory is accessible to JReleaser:"
+          find build/staging-deploy -type f -name "*.jar" -o -name "*.pom" | head -10
 
       - name: Run JReleaser
         run: ./gradlew jreleaserRelease --info
