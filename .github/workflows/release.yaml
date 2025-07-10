@@ -42,7 +42,15 @@ jobs:
         run: |
           ./gradlew build publishToMavenLocal --stacktrace --continue || true
           mkdir -p build/staging-deploy
-          cp -r ~/.m2/repository/org/boldi/libreoffice/utils/libreoffice-xmlbuilders/* build/staging-deploy/ || true
+          echo "Contents of ~/.m2/repository/org/boldi/libreoffice/utils/:"
+          ls -la ~/.m2/repository/org/boldi/libreoffice/utils/ || echo "Directory not found"
+          echo "Contents of build/libs/:"
+          ls -la build/libs/ || echo "Directory not found"
+          # Copy from build/libs instead of maven repository
+          cp build/libs/*.jar build/staging-deploy/ || true
+          cp build/libs/*.pom build/staging-deploy/ || true
+          echo "Contents of build/staging-deploy/:"
+          ls -la build/staging-deploy/ || echo "Directory not found"
 
       - name: Run JReleaser
         run: ./gradlew jreleaserRelease
