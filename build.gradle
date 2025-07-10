@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'org.boldi.libreoffice.utils'
-version = '1.0.0-SNAPSHOT'
+version = '1.0.0-RC1'
 description = 'A Gradle plugin for generating th XML files needed to build a LibreOffice Calc Add-in'
 
 
