@@ -59,12 +59,16 @@ publishing {
 }
 
 jreleaser {
-    // Essential project metadata for JReleaser and Maven Central
-    name = 'libreoffice-xmlbuilders'
-    description = 'A Gradle plugin for building and manipulating XML files involved in LibreOffice Java Calc Add-ins development.'
-    authors = ['Fred Boldireff']
-    license = 'Apache-2.0'
-    website = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders'
+    project {
+        // Essential project metadata for JReleaser and Maven Central
+        name = 'libreoffice-xmlbuilders'
+        description = 'A Gradle plugin for building and manipulating XML files involved in LibreOffice Java Calc Add-ins development.'
+        authors = ['Fred Boldireff']
+        license = 'Apache-2.0'
+        links {
+            homepage = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders'
+        }
+    }
     signing {
         active = 'ALWAYS'
         mode = 'COSIGN'
