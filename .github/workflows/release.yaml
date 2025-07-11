@@ -48,7 +48,7 @@ jobs:
         run: ./gradlew build --stacktrace
 
       - name: Run JReleaser
-        run: ./gradlew jreleaserRelease --info
+        run: ./gradlew jreleaserRelease --info --stacktrace
         env:
           # Sonatype credentials
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
