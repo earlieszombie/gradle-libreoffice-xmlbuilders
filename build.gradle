@@ -28,30 +28,32 @@ publishing {
         mavenLocal()
     }
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            pom {
-                name = rootProject.name
-                description = 'LibreOffice Calc Add-ins XML files builders'
-                url = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+        // Configure all publications with required Maven Central metadata
+        all { publication ->
+            if (publication instanceof MavenPublication) {
+                pom {
+                    name = rootProject.name
+                    description = 'LibreOffice Calc Add-ins XML files builders'
+                    url = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders'
 
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
                     }
-                }
-                developers {
-                    developer {
-                        id = 'earlieszombie'
-                        name = 'Fred Boldireff'
-                        email = 'earlieszombie@gmail.com'
+                    developers {
+                        developer {
+                            id = 'earlieszombie'
+                            name = 'Fred Boldireff'
+                            email = 'earlieszombie@gmail.com'
+                        }
                     }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
-                    developerConnection = 'scm:git:ssh://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
-                    url = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+                    scm {
+                        connection = 'scm:git:git://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+                        developerConnection = 'scm:git:ssh://github.com/earlieszombie/gradle-libreoffice-xmlbuilders.git'
+                        url = 'https://github.com/earlieszombie/gradle-libreoffice-xmlbuilders'
+                    }
                 }
             }
         }
