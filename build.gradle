@@ -63,7 +63,7 @@ publishing {
 jreleaser {
     project {
         // Essential project metadata for JReleaser and Maven Central
-        name = 'libreoffice-xmlbuilders'
+        // name will default to rootProject.name from settings.gradle
         description = 'A Gradle plugin for building and manipulating XML files involved in LibreOffice Java Calc Add-ins development.'
         authors = ['Fred Boldireff']
         license = 'Apache-2.0'
