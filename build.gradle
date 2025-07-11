@@ -76,8 +76,8 @@ jreleaser {
         mode = 'COSIGN'
         armored = false
         cosign {
-            privateKey = System.getenv('JRELEASER_COSIGN_PRIVATE_KEY')
-            password = System.getenv('JRELEASER_COSIGN_PASSWORD')
+            privateKeyFile = '__USE_ENVIRONMENT_VARIABLE__'
+            publicKeyFile = '__USE_ENVIRONMENT_VARIABLE__'
         }
     }
     deploy {
